@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 330">
+<defs><filter id="ffGrain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="2" stitchTiles="stitch"></feTurbulence><feColorMatrix type="matrix" values="0 0 0 0 0.25  0 0 0 0 0.2  0 0 0 0 0.12  0 0 0 0.6 -0.14"></feColorMatrix></filter></defs>
+<rect width="220" height="330" fill="#EFEADF"></rect>
+<rect x="6" y="6" width="208" height="318" fill="none" stroke="#DCCFB5" style="stroke-width: 3"></rect>
+<path d="M110 290 C 105 240 116 200 108 140" fill="none" stroke="#6A7B4C" style="stroke-width: 2.4; stroke-linecap: round"></path>
+<path d="M109 238 C 88 230 78 216 76 200 C 94 203 105 215 109 234 Z" fill="#7F8F5C"></path>
+<path d="M110 210 C 130 203 140 190 142 178 C 127 181 116 191 110 206 Z" fill="#7F8F5C"></path>
+<g transform="translate(108 118)">
+<path d="M0 -8 C -9 -20 -8 -38 0 -46 C 8 -38 9 -20 0 -8 Z" fill="#FBF6E8" transform="rotate(0)"></path>
+<path d="M0 -8 C -9 -20 -8 -38 0 -46 C 8 -38 9 -20 0 -8 Z" fill="#F4EDDA" transform="rotate(33)"></path>
+<path d="M0 -8 C -9 -20 -8 -38 0 -46 C 8 -38 9 -20 0 -8 Z" fill="#FBF6E8" transform="rotate(66)"></path>
+<path d="M0 -8 C -9 -20 -8 -38 0 -46 C 8 -38 9 -20 0 -8 Z" fill="#F1E9D4" transform="rotate(99)"></path>
+<path d="M0 -8 C -9 -20 -8 -38 0 -46 C 8 -38 9 -20 0 -8 Z" fill="#FBF6E8" transform="rotate(131)"></path>
+<path d="M0 -8 C -9 -20 -8 -38 0 -46 C 8 -38 9 -20 0 -8 Z" fill="#F4EDDA" transform="rotate(164)"></path>
+<path d="M0 -8 C -9 -20 -8 -38 0 -46 C 8 -38 9 -20 0 -8 Z" fill="#FBF6E8" transform="rotate(197)"></path>
+<path d="M0 -8 C -9 -20 -8 -38 0 -46 C 8 -38 9 -20 0 -8 Z" fill="#F1E9D4" transform="rotate(230)"></path>
+<path d="M0 -8 C -9 -20 -8 -38 0 -46 C 8 -38 9 -20 0 -8 Z" fill="#FBF6E8" transform="rotate(263)"></path>
+<path d="M0 -8 C -9 -20 -8 -38 0 -46 C 8 -38 9 -20 0 -8 Z" fill="#F4EDDA" transform="rotate(296)"></path>
+<path d="M0 -8 C -9 -20 -8 -38 0 -46 C 8 -38 9 -20 0 -8 Z" fill="#F1E9D4" transform="rotate(328)"></path>
+<circle cx="0" cy="0" r="11" fill="#C99433"></circle><circle cx="-3" cy="-3" r="5" fill="#D9A848"></circle>
+</g>
+<rect x="84" y="0" width="52" height="20" fill="#E6DDC6" opacity="0.8"></rect>
+<text x="110" y="314" fill="#6B6152" style="font-family: 'Newsreader', Georgia, serif; font-size: 12px; font-style: italic; text-anchor: middle">P &amp; S, June ’21</text>
+<rect width="220" height="330" filter="url(#ffGrain)"></rect>
+</svg>

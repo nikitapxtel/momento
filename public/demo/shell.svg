@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 220">
+<defs>
+<radialGradient id="fsShell" cx="0.5" cy="0.22" r="0.9"><stop offset="0" stop-color="#F8E2CF"></stop><stop offset="0.55" stop-color="#E8B898"></stop><stop offset="1" stop-color="#C98C6C"></stop></radialGradient>
+<filter id="fsGrain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="11" stitchTiles="stitch"></feTurbulence><feColorMatrix type="matrix" values="0 0 0 0 0.25  0 0 0 0 0.2  0 0 0 0 0.12  0 0 0 0.6 -0.14"></feColorMatrix></filter>
+</defs>
+<path d="M98 218 L142 218 L138 196 L102 196 Z" fill="#D19D7E"></path>
+<path d="M120 204 L36 92 C 32 46 72 12 120 12 C 168 12 208 46 204 92 Z" fill="url(#fsShell)"></path>
+<path d="M120 204 L46 88 M120 204 L60 56 M120 204 L80 30 M120 204 L102 16 M120 204 L138 16 M120 204 L160 30 M120 204 L180 56 M120 204 L194 88" fill="none" stroke="#B97E60" opacity="0.7" style="stroke-width: 2; stroke-linecap: round"></path>
+<path d="M120 204 L52 72 M120 204 L70 42 M120 204 L91 22 M120 204 L149 22 M120 204 L170 42 M120 204 L188 72" fill="none" stroke="#FCEBDD" opacity="0.65" style="stroke-width: 1.4; stroke-linecap: round"></path>
+<path d="M120 204 L36 92 C 32 46 72 12 120 12 C 168 12 208 46 204 92 Z" filter="url(#fsGrain)"></path>
+</svg>

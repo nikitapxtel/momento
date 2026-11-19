@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 230 280">
+<defs>
+<filter id="fzGrain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="6" stitchTiles="stitch"></feTurbulence><feColorMatrix type="matrix" values="0 0 0 0 0.25  0 0 0 0 0.2  0 0 0 0 0.12  0 0 0 0.6 -0.14"></feColorMatrix></filter>
+<linearGradient id="fzDusk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#34405A"></stop><stop offset="0.7" stop-color="#A86F5A"></stop><stop offset="1" stop-color="#D59A6A"></stop></linearGradient>
+</defs>
+<rect width="230" height="280" fill="#F5F3EE"></rect>
+<rect x="13" y="13" width="204" height="204" fill="url(#fzDusk)"></rect>
+<path d="M13 160 C 26 120 44 118 54 146 C 62 110 82 108 90 160 L90 217 L13 217 Z" fill="#1E2420"></path>
+<path d="M150 217 L150 150 C 158 122 180 120 188 146 C 194 132 206 134 217 144 L217 217 Z" fill="#1E2420"></path>
+<path d="M13 217 L217 217 L217 200 C 160 192 70 192 13 200 Z" fill="#2A2A24"></path>
+<path d="M16 76 Q 115 118 214 74" fill="none" stroke="#3A3A34" style="stroke-width: 1"></path>
+<circle cx="34" cy="84" r="3" fill="#F6D58E"></circle><circle cx="60" cy="94" r="3" fill="#F6D58E"></circle><circle cx="87" cy="101" r="3" fill="#F6D58E"></circle><circle cx="115" cy="103" r="3" fill="#F6D58E"></circle><circle cx="143" cy="101" r="3" fill="#F6D58E"></circle><circle cx="170" cy="94" r="3" fill="#F6D58E"></circle><circle cx="196" cy="84" r="3" fill="#F6D58E"></circle>
+<text x="115" y="254" fill="#55504A" style="font-family: 'Caveat', cursive; font-size: 24px; text-anchor: middle">Mum’s 60th</text>
+<rect width="230" height="280" filter="url(#fzGrain)"></rect>
+</svg>

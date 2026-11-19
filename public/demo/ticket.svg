@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 150">
+<defs><filter id="ftGrain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="8" stitchTiles="stitch"></feTurbulence><feColorMatrix type="matrix" values="0 0 0 0 0.25  0 0 0 0 0.2  0 0 0 0 0.12  0 0 0 0.6 -0.14"></feColorMatrix></filter></defs>
+<rect width="300" height="150" fill="#EEE5CF"></rect>
+<rect width="22" height="150" fill="#9E3A2A"></rect>
+<line x1="228" y1="6" x2="228" y2="144" stroke="#C8BB9B" style="stroke-width: 2; stroke-dasharray: 1 5"></line>
+<text x="40" y="38" fill="#6B5B3A" style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 2px">BRIXTON · STALLS</text>
+<text x="40" y="84" fill="#2C2418" style="font-family: 'Newsreader', Georgia, serif; font-size: 34px">Fri 22 Nov</text>
+<text x="40" y="118" fill="#6B5B3A" style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px">DOORS 7PM · ROW F · SEAT 12</text>
+<text x="264" y="75" fill="#6B5B3A" transform="rotate(-90 264 75)" style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 1px; text-anchor: middle">ADMIT ONE</text>
+<rect width="300" height="150" filter="url(#ftGrain)"></rect>
+</svg>
