@@ -2,6 +2,7 @@ import { useEffect, useState, type FormEvent } from 'react'
 import { Navigate } from 'react-router-dom'
 import { useAppState } from '../app/AppState'
 import { useAuth } from '../app/AuthProvider'
+import { signInErrorMessage } from '../lib/authErrors'
 import { supabase } from '../lib/supabase'
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -32,8 +33,7 @@ export function SignIn() {
     })
     if (error) {
       setStatus('error')
-      // Keep the message generic so the form never reveals whether an account exists.
-      setMessage('We couldn’t send the link just now. Please wait a moment and try again.')
+      setMessage(signInErrorMessage(error))
     } else {
       setStatus('sent')
       setMessage('Check your inbox: we’ve sent you a link to sign in.')
