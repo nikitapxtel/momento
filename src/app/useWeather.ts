@@ -1,5 +1,12 @@
 import { useCallback, useEffect, useState } from 'react'
-import { fetchWeather, modeFromClock, weatherLabel, type WeatherMode } from '../lib/weather'
+import {
+  cityFromTimeZone,
+  fetchWeather,
+  findPlace,
+  modeFromClock,
+  weatherLabel,
+  type WeatherMode,
+} from '../lib/weather'
 
 const CONSENT_KEY = 'momento-local-weather'
 
@@ -19,60 +26,94 @@ function writeConsent(on: boolean) {
   }
 }
 
+export type WeatherStatus = 'approximate' | 'locating' | 'precise' | 'blocked'
+
 export interface WeatherState {
   mode: WeatherMode
+  /** Short text for the header, e.g. "London · 9° Rain". */
   label: string
-  usingLocation: boolean
-  enableLocation: () => void
-  disableLocation: () => void
+  status: WeatherStatus
+  /** A one-off message to explain what happened, e.g. when location is blocked. */
+  message: string | null
+  usePreciseLocation: () => void
 }
 
+const LOCATION_HELP =
+  'Your browser didn’t share a location, so this is the weather for your time zone. To use your exact location, allow it for this site in your browser’s settings.'
+
 /**
- * Background weather. Location is only requested after the person opts in, is rounded
- * to about 11 km before it leaves the device, and is never stored or sent to our database.
- * Without consent the sky simply follows the time of day.
+ * Background weather.
+ * - By default the sky follows the weather for the city in the browser's time zone. No prompt,
+ *   and nothing more precise than a city name leaves the device.
+ * - If the person chooses, their location is used instead, rounded to about 11 km first.
+ * Location is never stored or sent to our database.
  */
 export function useWeather(): WeatherState {
-  const [usingLocation, setUsingLocation] = useState(readConsent)
   const [mode, setMode] = useState<WeatherMode>(() => modeFromClock(new Date()))
   const [label, setLabel] = useState(() => weatherLabel(modeFromClock(new Date()), null))
+  const [status, setStatus] = useState<WeatherStatus>(() =>
+    readConsent() ? 'locating' : 'approximate',
+  )
+  const [message, setMessage] = useState<string | null>(null)
 
-  useEffect(() => {
-    if (!usingLocation || !('geolocation' in navigator)) return
-    let cancelled = false
+  const flash = useCallback((text: string) => {
+    setMessage(text)
+    window.setTimeout(() => setMessage((m) => (m === text ? null : m)), 9000)
+  }, [])
+
+  const show = useCallback(async (lat: number, lon: number, place: string | null) => {
+    const now = await fetchWeather(lat, lon)
+    if (!now) return false
+    setMode(now.mode)
+    setLabel(place ? `${place} · ${now.label}` : now.label)
+    return true
+  }, [])
+
+  const approximate = useCallback(async () => {
+    const city = cityFromTimeZone(Intl.DateTimeFormat().resolvedOptions().timeZone)
+    if (!city) return
+    const place = await findPlace(city)
+    if (place) await show(place.latitude, place.longitude, place.name)
+  }, [show])
+
+  /** Ask the browser for a position. Callers set the 'locating' status first if needed. */
+  const requestPosition = useCallback(() => {
+    if (!('geolocation' in navigator)) {
+      setStatus('blocked')
+      flash(LOCATION_HELP)
+      void approximate()
+      return
+    }
     navigator.geolocation.getCurrentPosition(
       async (pos) => {
-        const now = await fetchWeather(pos.coords.latitude, pos.coords.longitude)
-        if (!cancelled && now) {
-          setMode(now.mode)
-          setLabel(now.label)
-        }
+        const ok = await show(pos.coords.latitude, pos.coords.longitude, null)
+        setStatus(ok ? 'precise' : 'approximate')
+        if (!ok) void approximate()
       },
       () => {
-        if (!cancelled) {
-          setUsingLocation(false)
-          writeConsent(false)
-        }
+        writeConsent(false)
+        setStatus('blocked')
+        flash(LOCATION_HELP)
+        void approximate()
       },
-      { enableHighAccuracy: false, maximumAge: 30 * 60 * 1000, timeout: 10000 },
+      { enableHighAccuracy: false, maximumAge: 30 * 60 * 1000, timeout: 15000 },
     )
-    return () => {
-      cancelled = true
-    }
-  }, [usingLocation])
+  }, [approximate, flash, show])
 
-  const enableLocation = useCallback(() => {
+  useEffect(() => {
+    // Only ask for a position on load if the person already chose to share it before.
+    const start =
+      readConsent() && 'geolocation' in navigator ? requestPosition : () => void approximate()
+    const id = window.setTimeout(start, 0)
+    return () => window.clearTimeout(id)
+  }, [approximate, requestPosition])
+
+  const usePreciseLocation = useCallback(() => {
     writeConsent(true)
-    setUsingLocation(true)
-  }, [])
+    setMessage(null)
+    setStatus('locating')
+    requestPosition()
+  }, [requestPosition])
 
-  const disableLocation = useCallback(() => {
-    writeConsent(false)
-    setUsingLocation(false)
-    const m = modeFromClock(new Date())
-    setMode(m)
-    setLabel(weatherLabel(m, null))
-  }, [])
-
-  return { mode, label, usingLocation, enableLocation, disableLocation }
+  return { mode, label, status, message, usePreciseLocation }
 }

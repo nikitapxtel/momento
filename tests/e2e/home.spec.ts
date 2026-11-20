@@ -78,6 +78,62 @@ test.describe('homepage', () => {
   })
 })
 
+test.describe('weather', () => {
+  const forecast = JSON.stringify({ current: { temperature_2m: 9.2, weather_code: 61, is_day: 1 } })
+  const geocode = JSON.stringify({
+    results: [{ name: 'London', latitude: 51.5, longitude: -0.12 }],
+  })
+
+  test.use({ timezoneId: 'Europe/London' })
+
+  test.beforeEach(async ({ page }) => {
+    await page.route('https://geocoding-api.open-meteo.com/**', (r) =>
+      r.fulfill({
+        contentType: 'application/json',
+        headers: { 'access-control-allow-origin': '*' },
+        body: geocode,
+      }),
+    )
+    await page.route('https://api.open-meteo.com/**', (r) =>
+      r.fulfill({
+        contentType: 'application/json',
+        headers: { 'access-control-allow-origin': '*' },
+        body: forecast,
+      }),
+    )
+  })
+
+  test('shows the weather for your time zone without asking for location', async ({ page }) => {
+    await page.goto('./')
+    await expect(page.getByRole('button', { name: /London · 9° Rain/ })).toBeVisible()
+    await expect(page.locator('.sky')).toHaveAttribute('data-weather', 'rain')
+  })
+
+  test('uses your location when you allow it, rounded first', async ({ page, context }) => {
+    await context.grantPermissions(['geolocation'])
+    await context.setGeolocation({ latitude: 51.454514, longitude: -2.58791 })
+    const requested: string[] = []
+    page.on(
+      'request',
+      (r) => r.url().includes('api.open-meteo.com/v1/forecast') && requested.push(r.url()),
+    )
+    await page.goto('./')
+    await page.getByRole('button', { name: /Use my location for the weather/ }).click()
+    await expect(page.locator('.weather-note')).toHaveText('9° Rain')
+    expect(requested.some((u) => u.includes('latitude=51.5') && u.includes('longitude=-2.6'))).toBe(
+      true,
+    )
+    expect(requested.some((u) => u.includes('51.4545'))).toBe(false)
+  })
+
+  test('explains what happened when location is blocked', async ({ page }) => {
+    await page.goto('./')
+    await page.getByRole('button', { name: /Use my location for the weather/ }).click()
+    await expect(page.getByText(/didn’t share a location/)).toBeVisible()
+    await expect(page.getByRole('button', { name: /London · 9° Rain/ })).toBeVisible()
+  })
+})
+
 test.describe('explore', () => {
   test('lists public boxes and shows only shared memories', async ({ page }) => {
     await page.goto('./#/explore')

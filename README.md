@@ -15,8 +15,9 @@ flower or an old photo, front and back, and keep it safe even if the original is
   default. Someone else can see a memory only if your profile is public _and_ you've chosen
   to show that memory.
 - **Explore** other people's public boxes.
-- **Weather sky**: if you opt in, the background follows the weather where you are
-  (location is rounded to about 11 km and never stored). Light and dark themes.
+- **Weather sky**: the background follows the weather for your time zone's city, with no
+  location prompt. Click the weather to use your exact location instead (rounded to about
+  11 km, never stored). Light and dark themes.
 
 ## Tech
 

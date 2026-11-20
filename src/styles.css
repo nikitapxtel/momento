@@ -180,12 +180,46 @@ select {
 button.weather-note {
   cursor: pointer;
   text-decoration: underline;
-  text-underline-offset: 3px;
+  text-decoration-style: dotted;
+  text-underline-offset: 4px;
 }
 
-@media (max-width: 900px) {
+button.weather-note:hover {
+  opacity: 0.9;
+}
+
+.weather-message {
+  display: block;
+  flex: 1 0 100%;
+  max-width: 460px;
+  margin: 4px 0 0 auto;
+  padding: 12px 16px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  font-size: 14px;
+  line-height: 1.45;
+  text-align: left;
+}
+
+@media (max-width: 700px) {
+  .site-header {
+    padding: 10px 16px;
+  }
+  .brand {
+    min-width: 0;
+  }
+  .main-nav {
+    order: 3;
+    flex: 1 0 100%;
+    justify-content: center;
+  }
+  .header-tools {
+    min-width: 0;
+    gap: 4px;
+  }
   .weather-note {
-    display: none;
+    font-size: 13px;
   }
 }
 

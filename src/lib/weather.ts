@@ -53,6 +53,53 @@ export function parseOpenMeteo(json: unknown): WeatherNow | null {
   return { mode, temperature, label: weatherLabel(mode, temperature) }
 }
 
+/**
+ * A rough place from the browser's time zone, e.g. "Europe/London" → "London".
+ * Lets the sky follow local weather without asking for location at all.
+ */
+export function cityFromTimeZone(timeZone: string | undefined): string | null {
+  if (!timeZone || !timeZone.includes('/') || timeZone.startsWith('Etc/')) return null
+  const city = timeZone.split('/').pop()?.replace(/_/g, ' ').trim()
+  return city ? city : null
+}
+
+export interface Place {
+  name: string
+  latitude: number
+  longitude: number
+}
+
+interface GeocodeResponse {
+  results?: Array<{ name?: unknown; latitude?: unknown; longitude?: unknown }>
+}
+
+export function parseGeocode(json: unknown): Place | null {
+  const first = (json as GeocodeResponse | null)?.results?.[0]
+  if (!first) return null
+  const { name, latitude, longitude } = first
+  if (typeof name !== 'string' || typeof latitude !== 'number' || typeof longitude !== 'number') {
+    return null
+  }
+  return { name, latitude, longitude }
+}
+
+export async function findPlace(
+  name: string,
+  fetchImpl: typeof fetch = fetch,
+): Promise<Place | null> {
+  const url = new URL('https://geocoding-api.open-meteo.com/v1/search')
+  url.searchParams.set('name', name)
+  url.searchParams.set('count', '1')
+  url.searchParams.set('language', 'en')
+  try {
+    const res = await fetchImpl(url.toString(), { referrerPolicy: 'no-referrer' })
+    if (!res.ok) return null
+    return parseGeocode(await res.json())
+  } catch {
+    return null
+  }
+}
+
 export async function fetchWeather(
   lat: number,
   lon: number,

@@ -29,11 +29,12 @@ These rules are tested in `supabase/tests/rls_test.sql`, which runs in CI on eve
 **The web app**
 
 - A strict Content Security Policy: scripts only from the site itself, no plugins, and
-  network access limited to Supabase and the weather service.
+  network access limited to Supabase and the Open-Meteo weather and place-lookup services.
 - No `dangerouslySetInnerHTML`; React escapes all user text.
 - Sign-in uses one-time email links (PKCE flow), so there are no passwords to leak, and sign-in
   messages never reveal whether an account exists.
-- Location for the weather sky is opt-in, rounded to about 11 km, and never stored.
+- The weather sky uses the city from the browser's time zone by default (no location prompt).
+  Precise location is opt-in, rounded to about 11 km before it leaves the device, and never stored.
 
 **The pipeline**
 

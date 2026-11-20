@@ -25,16 +25,21 @@ export function Header({ weather }: { weather: WeatherState }) {
         </NavLink>
       </nav>
       <div className="header-tools">
-        {weather.usingLocation ? (
+        {weather.status === 'precise' ? (
           <span className="weather-note">{weather.label}</span>
+        ) : weather.status === 'locating' ? (
+          <span className="weather-note" aria-live="polite">
+            Finding your weather…
+          </span>
         ) : (
           <button
             type="button"
             className="weather-note"
-            onClick={weather.enableLocation}
-            title="Uses your approximate location (about 11 km) to match the sky to your weather. Nothing is stored."
+            onClick={weather.usePreciseLocation}
+            title="Showing the weather for your time zone. Select to use your location instead (rounded to about 11 km, never stored)."
+            aria-label={`${weather.label}. Use my location for the weather`}
           >
-            Show my weather
+            {weather.label}
           </button>
         )}
         <button
@@ -109,6 +114,7 @@ export function Header({ weather }: { weather: WeatherState }) {
             </Link>
           ))}
       </div>
+      {weather.message && <output className="weather-message">{weather.message}</output>}
     </header>
   )
 }

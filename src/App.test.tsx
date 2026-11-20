@@ -1,11 +1,20 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { describe, expect, it } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import App from './App'
 
 // No Supabase settings are present in tests, so the app runs in demo mode.
 
 describe('App (demo mode)', () => {
+  beforeEach(() => {
+    // Keep tests offline: the weather services are never really called.
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async () => ({ ok: false, json: async () => ({}) })),
+    )
+    return () => vi.unstubAllGlobals()
+  })
+
   it('shows the sample box on the homepage', () => {
     render(<App />)
     expect(
@@ -27,8 +36,29 @@ describe('App (demo mode)', () => {
   })
 
   it('does not ask for location until the person chooses to', () => {
+    const getCurrentPosition = vi.fn()
+    Object.defineProperty(navigator, 'geolocation', {
+      configurable: true,
+      value: { getCurrentPosition },
+    })
     render(<App />)
-    expect(screen.getByRole('button', { name: 'Show my weather' })).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: /Use my location for the weather/ }),
+    ).toBeInTheDocument()
+    expect(getCurrentPosition).not.toHaveBeenCalled()
+  })
+
+  it('explains when the browser blocks location', async () => {
+    Object.defineProperty(navigator, 'geolocation', {
+      configurable: true,
+      value: {
+        getCurrentPosition: (_ok: unknown, fail: (e: unknown) => void) => fail({ code: 1 }),
+      },
+    })
+    const user = userEvent.setup()
+    render(<App />)
+    await user.click(screen.getByRole('button', { name: /Use my location for the weather/ }))
+    expect(await screen.findByText(/didn’t share a location/)).toBeInTheDocument()
   })
 
   it('navigates to Explore and shows public boxes', async () => {
