@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 150">
-<defs><filter id="ftGrain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="8" stitchTiles="stitch"></feTurbulence><feColorMatrix type="matrix" values="0 0 0 0 0.25  0 0 0 0 0.2  0 0 0 0 0.12  0 0 0 0.6 -0.14"></feColorMatrix></filter></defs>
+<defs><filter id="ftGrain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="8" stitchTiles="stitch"></feTurbulence><feColorMatrix type="matrix" values="0 0 0 0 0.25  0 0 0 0 0.2  0 0 0 0 0.12  0 0 0 0.6 -0.14"></feColorMatrix><feComposite in2="SourceGraphic" operator="in"></feComposite></filter></defs>
 <rect width="300" height="150" fill="#EEE5CF"></rect>
 <rect width="22" height="150" fill="#9E3A2A"></rect>
 <line x1="228" y1="6" x2="228" y2="144" stroke="#C8BB9B" style="stroke-width: 2; stroke-dasharray: 1 5"></line>

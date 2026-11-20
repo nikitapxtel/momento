@@ -33,6 +33,7 @@ export const demoMemories: Memory[] = [
     happenedOn: '2018-06-24',
     story: 'Wore it until October. Mum finally cut it off while I was asleep.',
     isShown: false,
+    model: 'band',
     sides: [side('Front', art('wristband'), null, 240, 300)],
   },
   {

@@ -33,6 +33,11 @@ export interface Memory {
   story: string
   isShown: boolean
   sides: MemorySide[]
+  /**
+   * Optional hand-built 3D form for objects that aren't flat, e.g. a fabric wristband.
+   * Not stored in the database yet; used by the sample box.
+   */
+  model?: 'band'
 }
 
 export interface Profile {
